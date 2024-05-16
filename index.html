@@ -7,13 +7,34 @@
 
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="button.css">
 
     <script defer src="index.js"></script>
 </head>
 <body>
     <div class="centerFull">
-        <div class="GameScreen shadow">
+        
+        <div class="menu">
+            <div>
+                <button class="button" >&lt;</button>
+                <button class="button" onclick="Logic.setGrid(Logic.lin, ++Logic.col) ; Logic.generate()">&gt;</button>
+            </div>
+            <div>
+                <button class="button" onclick="Logic.setGrid(--Logic.lin, Logic.col) ; Logic.generate()">∨</button>
+             <button class="button" onclick="Logic.setGrid(++Logic.lin, Logic.col) ; Logic.generate()">∧</button>
+            </div>
+            <div>
+                <button class="button" onclick="Logic.setGrid(Logic.lin, Logic.col) ; --Logic.randomness  ; Logic.generate()">R-</button>
+                <button class="button" onclick="Logic.setGrid(Logic.lin, Logic.col) ; ++Logic.randomness  ; Logic.generate()">R+</button>
+            </div>
+            
+            <button class="button">&lt;</button>
+            <button class="button">&gt;</button>
+            <button class="button">+</button>
         </div>
+        
+        <div class="GameScreen shadow"></div>
+
     </div>
 </body>
 </html>
