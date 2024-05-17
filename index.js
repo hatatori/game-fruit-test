@@ -22,51 +22,42 @@ const Logic = {
     Fruits: '🍅 🌶️ 🎂 🍉 🥤 🍰 🥝 🍫 🍒 🍏 🍑 🍌 🍅 🌶️ 🎂 🍰 🍫 🥜 🍦 🍨 🥭'.split(" "),
     table: [
         [0, 8, 8, 5],
-        [5, -1, 9, 0],
-        [3, -1, 3, 3],
+        [5, 0, 9, 0],
+        [3, 1, 3, 3],
         [5, 9, 8, 2],
         [5, 1, 2, 1],
     ],
 
-    NegativeTables(table = this.table){
+    NegativeLine(table_line){
+        // table = [3, 2, 2, 2]
+        let tb = []
+        tb = table_line
 
-        // let table = this.table
-        
-        function NegativeLine(table){
-            // table = [3, 2, 2, 2]
-            let tb = []
-            tb = table
-    
-            for(j=0;j<table.length;j++){
-                a = table[j]
-                b = table[j-1]
-                c = table[j-2]
-    
-                if(a != undefined && b != undefined && c != undefined){
-                    if(a==b && a==c && b==c){
-                        table[j] = -1
-                        table[j-1] = -1
-                        table[j-2] = -1
-                    }
+        for(j=0;j<table_line.length;j++){
+            a = table_line[j]
+            b = table_line[j-1]
+            c = table_line[j-2]
+
+            if(a != undefined && b != undefined && c != undefined){
+                if(a==b && a==c && b==c){
+                    table_line[j] = -1
+                    table_line[j-1] = -1
+                    table_line[j-2] = -1
                 }
             }
-            return tb
         }
-    
-        function NegativeTable(table){
-            const new_table = []
-            for(i=0;i<table.length;i++){
-                const tb = NegativeLine(table[i])
-                new_table.push(tb)
-            }
-            return new_table
-        }
-    
-        
-        let tb = NegativeTable(table)
-        tb = Logic.rotateMatrix(NegativeTable(tb))
-        tb = NegativeTable(tb)
-        tb = Logic.rotateMatrix(NegativeTable(tb))
+        return tb
+    },
+
+    NegativeTables(tb = Logic.table){
+
+        // table = this.table
+
+        tb = tb.map(line=> Logic.NegativeLine(line) )
+        tb = Logic.rotateMatrix(tb)
+        tb = tb.map(line=> Logic.NegativeLine(line) )
+        tb = Logic.rotateMatrix(tb)
+
         return tb
     },
 
@@ -81,38 +72,52 @@ const Logic = {
 
     Renew(){
         // add new fruits in first line after clear repeated fruits
+        // Logic.table = Logic.NegativeTables()
 
-        while(Logic.table[0].includes(-1)){
+        // while(Logic.table[0].includes(-1)){
             for(j=0;j<Logic.col;j++){
                 // console.log(Logic.table[0][j])
                 if(Logic.table[0][j] == -1){
                     Graphics.PieceAdd([0,j])
-                    Logic.Downs()
+                    // Logic.table[i][j] = 
+                    // Logic.Downs()
                 }
             }
-        }
+        // }
 
     },
 
     Downs(){
-        for (let i = 0; i < Logic.lin; i++) {
-            for (let j = 0; j < Logic.col; j++) {
-                Logic.Down(i,j)
+        for (let q = 0; q < Logic.lin; q++) {
+            for (let i = 0; i < Logic.lin; i++) {
+                for (let j = 0; j < Logic.col; j++) {
+                    if(Logic.table[i+1] != undefined && Logic.table[i+1][j] == -1){
+                        Logic.Down(i,j)
+                    }
+                }
             }
         }
     },
 
     Down(i, j){
-        try{
-            if(Logic.table[i+1][j] != -1) return
-            aux = Logic.table[i][j]
-            Logic.table[i][j] = Logic.table[i+1][j]
-            Logic.table[i+1][j] = aux
-            el = Graphics.getElementByCoordinate(i, j)
-            el.style.top = (i+1)*Logic.size+'px'
-            el.style.left = j*Logic.size+'px'
-            el.setAttribute('lin', (i+1))
-        }catch(err){}
+
+        if(Logic.table[i][j] == -1) {
+            console.error("non-existent element in position");
+            return
+        }
+
+        if(Logic.table[i+1][j] > -1) {
+            console.error("There is an element below, impossible to fall");
+            return
+        }
+        
+        aux = Logic.table[i][j]
+        Logic.table[i][j] = Logic.table[i+1][j]
+        Logic.table[i+1][j] = aux
+        el = Graphics.getElementByCoordinate(i, j)
+        el.style.top = (i+1)*Logic.size+'px'
+        el.style.left = j*Logic.size+'px'
+        el.setAttribute('lin', (i+1))
     },
     
     Swap(a,b){
@@ -383,7 +388,8 @@ const Graphics = {
 
                 // Logic.Falls()
                 // for(let r=0;r<Logic.col;r++){
-                //     Graphics.ClearLines()
+                Logic.table = Logic.NegativeTables()
+                Graphics.ClearLines()
                 // }
                 // Logic.Downs()
                 // setTimeout(()=>{
@@ -438,36 +444,47 @@ const Graphics = {
         
         for(let i=0;i<Logic.lin;i++){
             for(let j=0;j<Logic.col;j++){
+                
                 const el = Graphics.getElementByCoordinate(i,j)
+                
+                // console.log(`${i} - ${j}`)
+                // console.log(el)
+
                 if(matrixB[i][j] == -1){
-                    
+
+                    console.log(matrixB[i][j])
+
                     try{
                         el.style.backgroundColor='#341a21'
                         el.style.opacity=0
                         
-                        // setTimeout(()=>{
-                        //     el.remove()
-                        // }, 200)
+                        setTimeout(()=>{
+                            el.remove()
+                            Logic.table = Logic.NegativeTables()
+                            // console.log(el)
+                        }, 200)
                         
-                        // setTimeout(()=>{
-                        //     // el.remove()
-                        //     for(let r=0;r<Logic.col;r++){
-                        //         Logic.Downs()
-                        //     }
-                        // }, 400)
+                        setTimeout(()=>{
+                            // el.remove()
+                            for(let r=0;r<Logic.col;r++){
+                                Logic.Renew()
+                                Logic.Downs()
+                            }
+                        }, 400)
                         
-                        // setTimeout(()=>{
-                        //     Logic.Renew()
-                        // }, 500)
+                        setTimeout(()=>{
+                            // Logic.table = Logic.NegativeTables()
+                            // Logic.Renew()
+                        }, 600)
 
                     }catch(err){}
-                }else{
+                // }else{
                     // el.style.backgroundColor
-                    setTimeout(()=> el.style.transition = '0.2s', 0 )
-                    setTimeout(()=> el.style.transition = '0.2s', 700 )
-                    el.style.backgroundColor='transparent'
-                    
+                    // setTimeout(()=> el.style.transition = '0.2s', 0 )
+                    // setTimeout(()=> el.style.transition = '0.2s', 700 )
+                    // el.style.backgroundColor='transparent'
                 }
+                
             }   
         }
         // for(i=0;i<Logic.lin;i++){
@@ -478,17 +495,17 @@ const Graphics = {
 }
 
 // Logic.setGrid(5, 4)
-Logic.setGrid(5, 4)
-Logic.generate()
+// Logic.setGrid(5, 4)
+// Logic.generate()
 
 
-// Logic.generateTable([
-//     [-1, -1, -1, 2],
-//     [0, 1, 2, 0],
-//     [4, 0, 3, 5],
-//     [2, 2, 1, 2],
-//     [1, 0, 1, 3],
-// ])
+Logic.generateTable([
+    [3, 3, 3, 2],
+    [0, 1, 4, 0],
+    [2, 2, 2, 5],
+    [1, 1, 2, 2],
+    [1, 0, 1, 3],
+])
 
 // Graphics.ClearLines()
 // Graphics.ClearLines()
@@ -509,26 +526,26 @@ Logic.generate()
 // Graphics.ClearLines() //checa colunas
 
 
-function SubMatrix(){
-    const Smatrix = Logic.SumMatrix()
-    const Table = Logic.table
-    for (let i = 0; i < Logic.lin; i++) {
-        for (let j = 0; j < Logic.col; j++) {
-            if(Smatrix[i][j] == 1){
-                Table[i][j] = -1
-            }
-        }
-    }
-    return Table
-}
+// function SubMatrix(){
+//     const Smatrix = Logic.SumMatrix()
+//     const Table = Logic.table
+//     for (let i = 0; i < Logic.lin; i++) {
+//         for (let j = 0; j < Logic.col; j++) {
+//             if(Smatrix[i][j] == 1){
+//                 Table[i][j] = -1
+//             }
+//         }
+//     }
+//     return Table
+// }
 
-sm = Logic.SubMatrix()
+// sm = Logic.SubMatrix()
 
-function show(tab){
-    for(i=0;i<Logic.lin;i++){
-        console.log(tab[i])
-    }
-}
+// function show(tab){
+//     for(i=0;i<Logic.lin;i++){
+//         console.log(tab[i])
+//     }
+// }
 
 // sm = Logic.SubMatrix()
 
@@ -539,70 +556,32 @@ window.onkeyup = (e) => {
         // Logic.Downs()
     }
     if(e.key == '2') {
-        // Graphics.ClearLines()
-        for(i=0;i<Logic.lin;i++)
-            Logic.Downs()
+        Logic.Downs()
     }
+
     if(e.key == '3') {
         Logic.Renew()
     }
 
 }
 
-setInterval(()=>{
-    const matrixB = Logic.SubMatrix()
-    for(let i=0;i<Logic.lin;i++){
-        for(let j=0;j<Logic.col;j++){
-            const el = Graphics.getElementByCoordinate(i,j)
-            if(matrixB[i][j] == -1){
-                
-                try{
-                    el.style.backgroundColor='#341a21'
-                    el.style.opacity=0
-                    
-                    setTimeout(()=>{
-                        el.remove()
-                    }, 200)
-                    
-                    setTimeout(()=>{
-                        el.remove()
-                        for(let r=0;r<Logic.col;r++){
-                            Logic.Downs()
-                        }
-                    }, 500)
-
-                    let test = false
-                    Logic.SubMatrix().map(e=> {
-                        if(e.includes(-1)){
-                            test = true
-                        }
-                    } )
-                    
-                    if(test){
-                        setTimeout(()=>{
-                            Logic.Renew()
-                        }, 700)
-                    }
-
-            // Graphics.ClearLines()
-            // Logic.Downs()
-            }catch(err){}
-        }}}
-}, 300)
+// setInterval(()=>{
+//     Graphics.ClearLines()
+// }, 500)
 
 
 
 
 
-table = [
-    [1,2,3,4],
-    [3,2,1,2],
-    [1,2,3,4],
-    [3,2,2,2],
-    [1,3,3,3]
-]
+// table = [
+//     [1,2,3,4],
+//     [3,2,1,2],
+//     [1,2,3,4],
+//     [3,2,2,2],
+//     [1,3,3,3]
+// ]
 
-console.log(Logic.NegativeTables(table))
+// console.log(Logic.NegativeTables(table))
 
 // t = [
 //     [1,3,3,4],
