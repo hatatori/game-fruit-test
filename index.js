@@ -37,13 +37,20 @@ const Logic = {
     
 
     NegativeLine(table_line){
-        table_line = table_line.map(e=> e == -1 ?  'a' : e )
-        table_line = table_line.join('')
-        table_line = table_line.replace(/-?(\d)\1{2,}/g, (e,i) => 'x'.repeat(e.length))
-        table_line = table_line.split("")
-        table_line = table_line.map(e=>e.replace(/x|a/g, '-1')|0)
+        function Hex(letter){
+            return '0x'+letter.toString(16)
+        }
+        function CharCode(n){
+            return String.fromCharCode(Hex(1000+n))
+        }
 
-        return table_line
+        let line = table_line
+        let text = line
+        text = text.map(e=>CharCode(e))
+        text = text.join('').replace(/(.)\1{2,}/g, e=> 'x'.repeat(e.length))
+        text = text.split('').map(e=> e != 'x' ? 'a' : e )
+        text = line.map((e,i) => text[i] == 'x' ? -1 : e )
+        return text
     },
 
     NegativeTables(tb = Logic.table){
@@ -480,7 +487,7 @@ const Graphics = {
 
                 if(matrixB[i][j] == -1){
 
-                    console.log(matrixB[i][j])
+                    // console.log(matrixB[i][j])
 
                     try{
                         el.style.backgroundColor='#341a21'
@@ -606,10 +613,19 @@ setInterval(()=>{
     Graphics.ClearLines()
 }, 500)
 
-// let text = [-1, -1, -1, 3, 3, 5, 5, 5,1,2,3,5,4,3,3,3]
-// text = text.map(e=> e == -1 ?  'a' : e )
-// text = text.join('')
-// text = text.replace(/-?(\d)\1{2,}/g, (e,i) => 'x'.repeat(e.length))
-// text = text.split("")
-// text = text.map(e=>e.replace(/x|a/g, '-1')|0)
+
+
+// function Hex(letter){
+//     return '0x'+letter.toString(16)
+// }
+// function CharCode(n){
+//     return String.fromCharCode(Hex(1000+n))
+// }
+
+// let line = [-1,-1,-1,2,3,4,5,6,7,8,9,11,11,11,2,3]
+// let text = line
+// text = text.map(e=>CharCode(e))
+// text = text.join('').replace(/(.)\1{2,}/g, e=> 'x'.repeat(e.length))
+// text = text.split('').map(e=> e != 'x' ? 'a' : e )
+// text = line.map((e,i) => text[i] == 'x' ? -1 : e )
 // console.log(text)
