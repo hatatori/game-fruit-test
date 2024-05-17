@@ -495,17 +495,17 @@ const Graphics = {
 }
 
 // Logic.setGrid(5, 4)
-// Logic.setGrid(5, 4)
-// Logic.generate()
+Logic.setGrid(6, 4)
+Logic.generate()
 
 
-Logic.generateTable([
-    [3, 3, 3, 2],
-    [0, 1, 4, 0],
-    [2, 2, 2, 5],
-    [1, 1, 2, 2],
-    [1, 0, 1, 3],
-])
+// Logic.generateTable([
+//     [3, 3, 3, 2],
+//     [0, 1, 4, 0],
+//     [2, 2, 2, 5],
+//     [1, 1, 2, 2],
+//     [1, 0, 1, 3],
+// ])
 
 // Graphics.ClearLines()
 // Graphics.ClearLines()
@@ -565,9 +565,9 @@ window.onkeyup = (e) => {
 
 }
 
-// setInterval(()=>{
-//     Graphics.ClearLines()
-// }, 500)
+setInterval(()=>{
+    Graphics.ClearLines()
+}, 500)
 
 
 
