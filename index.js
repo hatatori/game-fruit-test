@@ -27,7 +27,48 @@ const Logic = {
         [5, 9, 8, 2],
         [5, 1, 2, 1],
     ],
-    canPlay: true,
+
+    NegativeTables(table = this.table){
+
+        // let table = this.table
+        
+        function NegativeLine(table){
+            // table = [3, 2, 2, 2]
+            let tb = []
+            tb = table
+    
+            for(j=0;j<table.length;j++){
+                a = table[j]
+                b = table[j-1]
+                c = table[j-2]
+    
+                if(a != undefined && b != undefined && c != undefined){
+                    if(a==b && a==c && b==c){
+                        table[j] = -1
+                        table[j-1] = -1
+                        table[j-2] = -1
+                    }
+                }
+            }
+            return tb
+        }
+    
+        function NegativeTable(table){
+            const new_table = []
+            for(i=0;i<table.length;i++){
+                const tb = NegativeLine(table[i])
+                new_table.push(tb)
+            }
+            return new_table
+        }
+    
+        
+        let tb = NegativeTable(table)
+        tb = Logic.rotateMatrix(NegativeTable(tb))
+        tb = NegativeTable(tb)
+        tb = Logic.rotateMatrix(NegativeTable(tb))
+        return tb
+    },
 
     refresh(){
         if(Logic.randomness > Logic.Fruits.length-1)
@@ -37,48 +78,6 @@ const Logic = {
         Logic.generate()
     },
 
-    // Falls(){
-
-    //     // sm = Logic.SubMatrix()
-    //     // Graphics.ClearLines()
-        
-    //     for(let r=0;r<10;r++){
-    //         setTimeout(()=>{
-    //             Logic.Fall()
-    //         }, r*50)
-    //     }
-
-    //     // setTimeout(()=>{
-    //     //     for (let j = 0; j < Logic.col; j++) {
-    //     //         if(Logic.table[0][j] == -1){
-    //     //             console.log('ok')
-    //     //             const r = Math.random()*Logic.randomness|0
-    //     //             Logic.table[0][j] = r
-    //     //             Graphics.PieceAdd([0,j], r)
-    //     //         }
-    //     //     }
-    //     // }, 400)
-         
-    // },
-
-    // Fall(){
-    //     sm = Logic.SubMatrix()
-
-    //     for(i=Logic.col;i>0;i--){
-    //         LinA = i-1
-    //         LinB = i
-            
-    //         for(j=0;j<Logic.col;j++){
-    //             col_a = sm[LinA][j]
-    //             col_b = sm[LinB][j]
-                
-    //             if(col_b == -1){
-    //                 Logic.Down([LinB,j],[LinA,j]);
-    //             }
-    //         }
-    //         Logic.table = sm
-    //     }     
-    // },
 
     Renew(){
         // add new fruits in first line after clear repeated fruits
@@ -434,7 +433,8 @@ const Graphics = {
     },
 
     ClearLines(){
-        const matrixB = Logic.SubMatrix()
+        // const matrixB = Logic.SubMatrix()
+        const matrixB = Logic.NegativeTables()
         
         for(let i=0;i<Logic.lin;i++){
             for(let j=0;j<Logic.col;j++){
@@ -592,18 +592,31 @@ setInterval(()=>{
 
 
 
-const HTMLEvents = {
-    col: {
-        add(){ Logic.setGrid(Logic.lin, ++Logic.col) },
-        sub(){ Logic.setGrid(Logic.lin, --Logic.col) },
-    },
-    lin: {
-        add(){ Logic.setGrid(++Logic.lin, Logic.col) },
-        sub(){ Logic.setGrid(--Logic.lin, Logic.col) },
-    },
-    rand: {
-        add(){ ++Logic.randomness },
-        sub(){ --Logic.randomness },
-    },
-    
-}
+
+
+table = [
+    [1,2,3,4],
+    [3,2,1,2],
+    [1,2,3,4],
+    [3,2,2,2],
+    [1,3,3,3]
+]
+
+console.log(Logic.NegativeTables(table))
+
+// t = [
+//     [1,3,3,4],
+//     [3,3,1,2],
+//     [1,3,3,4],
+//     [3,2,2,2],
+//     [1,2,3,3]
+// ]
+// console.log(t)
+// t = removeEqual(t)
+// console.log(t)
+
+// t = Logic.rotateMatrix(t)
+// t = removeEqual(t)
+// t = Logic.rotateMatrix(t)
+// console.log(t)
+// console.log(Logic.rotateMatrix(t))
