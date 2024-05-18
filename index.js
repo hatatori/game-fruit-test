@@ -17,7 +17,7 @@ const Logic = {
     lin: 5,
     col: 4,
     size: 80,
-    randomness: 5,
+    randomness: 9,
     blocks: [],
     Fruits: '🍅 🌶️ 🎂 🍉 🥤 🍰 🥝 🍫 🍒 🍏 🍑 🍌 🍅 🌶️ 🎂 🍰 🍫 🥜 🍦 🍨 🥭'.split(" "),
     table: [
@@ -580,17 +580,17 @@ const Graphics = {
 
 // Logic.setGrid(5, 4)
 Logic.setPoints(0)
-// Logic.setGrid(6, 4)
-// Logic.generate()
+Logic.setGrid(6, 4)
+Logic.generate()
 
 
-Logic.generateTable([
-    [1, 2, 2, 3],
-    [0, 2, 4, 0],
-    [2, 2, 2, 2],
-    [2, 1, 2, 2],
-    [1, 3, 1, 3],
-])
+// Logic.generateTable([
+//     [1, 2, 2, 3],
+//     [0, 2, 4, 0],
+//     [2, 2, 2, 2],
+//     [2, 1, 2, 2],
+//     [1, 3, 1, 3],
+// ])
 
 // Graphics.ClearLines()
 // Graphics.ClearLines()
