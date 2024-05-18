@@ -461,7 +461,9 @@ const Graphics = {
         // div.innerHTML = `<img class="item" style="background-image: url('${im}');" width="${Logic.size-10}" height="${Logic.size-10}">`
         // div.innerHTML = `<img width="${Logic.size-30}" height="${Logic.size-30}" src='${im}'> `
 
-        function handlerDown(){
+
+        div.addEventListener('mousedown', e => {
+
             if (!Logic.blocks.includes(div)) {
                 Logic.blocks.push(div)
                 
@@ -469,49 +471,44 @@ const Graphics = {
                 div.style.opacity = 0.3
                 div.style.boxShadow = '0px 0px 0px 3px white'
             }
-        }
 
-        let d;
-        function handlerMove(e){
-            d = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY)
-        }
+            if (Logic.blocks.length == 2) {
 
-        function handlerUp(){
-            
-            Logic.blocks.push(d||div)
+                Logic.blocks[0].style.scale = 1
+                Logic.blocks[0].style.opacity = 1
+                Logic.blocks[0].style.boxShadow = 'initial'
 
-            Logic.blocks[0].style.scale = 1
-            Logic.blocks[0].style.opacity = 1
-            Logic.blocks[0].style.boxShadow = 'initial'
+                Logic.blocks[1].style.scale = 1
+                Logic.blocks[1].style.opacity = 1
+                Logic.blocks[1].style.boxShadow = 'initial'
 
-            Logic.blocks[1].style.scale = 1
-            Logic.blocks[1].style.opacity = 1
-            Logic.blocks[1].style.boxShadow = 'initial'
+                const l1 = Logic.blocks[0].getAttribute('lin') | 0
+                const c1 = Logic.blocks[0].getAttribute('col') | 0
 
-            const l1 = Logic.blocks[0].getAttribute('lin') | 0
-            const c1 = Logic.blocks[0].getAttribute('col') | 0
+                const l2 = Logic.blocks[1].getAttribute('lin') | 0
+                const c2 = Logic.blocks[1].getAttribute('col') | 0
 
-            const l2 = Logic.blocks[1].getAttribute('lin') | 0
-            const c2 = Logic.blocks[1].getAttribute('col') | 0
+                Logic.Change([l1, c1], [l2, c2])
 
+                Logic.blocks = []
+                
 
-            Logic.Change([l1, c1], [l2, c2])
+                // Logic.Falls()
+                // for(let r=0;r<Logic.col;r++){
+                // Logic.table = Logic.NegativeTables()
+                // Graphics.ClearLines()
+                // }
+                // Logic.Downs()
+                // setTimeout(()=>{
+                //     for(let t=0;t<Logic.lin;t++){
+                //         Logic.Downs()
+                //     }
+                // }, 300)
 
-            Logic.blocks = []
-            d = undefined
-        }
+            }
 
-       
+        })
 
-
-        div.addEventListener('mousedown', handlerDown);
-        div.addEventListener('mouseup', handlerUp);
-
-        div.addEventListener('touchstart', handlerDown);
-        div.addEventListener('touchmove', (e)=>handlerMove(e));
-        div.addEventListener('touchend', handlerUp);
-
-        
 
         
 
@@ -627,47 +624,6 @@ Logic.generate()
 Logic.setGrid(window.innerHeight/120|0, window.innerWidth/120|0)
 Logic.generate()
 
-
-// div.addEventListener('mousedown', handlerDown);
-// div.addEventListener('mouseup', handlerUp);
-
-// let div;
-
-// window.addEventListener('touchstart', e=>{
-//     div = e.touches[0].target
-//     // document.elementFromPoint(e.clientX, e.clientY);
-    
-// });
-// window.addEventListener('touchmove', e=>{
-//     // document.elementFromPoint(e.clientX, e.clientY);
-//     // div = e.touches[0].target
-//     // var myLocation = e.originalEvent.changedTouches[0];
-//     // var realTarget = document.elementFromPoint(e.clientX, e.clientY);
-    
-//     e.touches[0].clientX = e.touches[0].clientX
-
-//     // console.log(e.touches[0].clientX)
-//     var realTarget = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-    
-//     console.log(realTarget)
-
-
-// });
-// window.addEventListener('touchend', e=>{
-//     // document.elementFromPoint(e.clientX, e.clientY);
-//     // console.log(e.touches[0].target)
-//     var realTarget = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-//     console.log(realTarget)
-// });
-
-// window.addEventListener('mousemove', e=>{
-    // console.log(e.clientX)
-    // document.elementFromPoint(e.clientX, e.clientY);
-    // console.log(e.touches[0].target)
-    // console.log(e)
-// });
-// window.addEventListener('touchend', handlerUp);
-// window.addEventListener('touchmove', (e)=>handlerMove(e));
 
 
 // Logic.generateTable([
