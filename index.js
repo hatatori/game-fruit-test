@@ -54,21 +54,58 @@ const Logic = {
     },
 
     NegativeTables(tb = Logic.table){
-        
-        tb = tb.map(line=> Logic.NegativeLine(line) )
-        tb = Logic.rotateMatrix(tb)
 
-        tb = tb.map(line=> Logic.NegativeLine(line) )
-        tb = Logic.rotateMatrix(tb)
-        
-        tb = tb.map(line=> Logic.NegativeLine(line) )
-        tb = Logic.rotateMatrix(tb)
+        let t1 = tb.map(line=> Logic.NegativeLine(line) )
+        // console.log(t1)
 
-        tb = tb.map(line=> Logic.NegativeLine(line) )
-        tb = Logic.rotateMatrix(tb)
+        let t2 =  Logic.rotateMatrix(tb)
+        t2 =  Logic.rotateMatrix(tb)
+        t2 = t2.map(line=> Logic.NegativeLine(line) )
+        // t2 =  Logic.rotateMatrix(tb)
+        t2 =  Logic.rotateMatrix(t2)
 
+        let t3 = [];
+
+        for(let i=0;i<Logic.lin;i++){
+            t3[i] = [];
+            for(let j=0;j<Logic.col;j++){
+                t3[i][j] = Logic.table[i][j]
+                
+                if(t1[i][j] == -1 || t2[i][j] == -1){
+                    t3[i][j] = -1
+                }
+
+            }
+        }
+        
+        // console.log('t2')
+        // console.log(t2)
+        console.log('t3')
+        console.log(t3)
         
         
+
+        // t2 = Logic.rotateMatrix(tb)
+
+        // console.log(t2)
+        
+        // t2 = Logic.NegativeLine()
+
+        // tb = tb.map(line=> Logic.NegativeLine(line) )
+        // tb = Logic.rotateMatrix(tb)
+        // tb = tb.map(line=> Logic.NegativeLine(line) )
+        // tb = Logic.rotateMatrix(tb)
+
+
+
+        // tb = tb.map(line=> Logic.NegativeLine(line) )
+        // tb = Logic.rotateMatrix(tb)
+
+        // tb = tb.map(line=> Logic.NegativeLine(line) )
+        // tb = Logic.rotateMatrix(tb)
+
+
+
         // console.log(tb)
         // tb = tb.map(line=> Logic.NegativeLine(line) )
         // console.log(tb)
@@ -83,9 +120,10 @@ const Logic = {
         // tb = Logic.rotateMatrix(tb)
 
         // console.log(tb)
-        Logic.table = tb
+        // Logic.table = tb
+        Logic.table = t3
 
-        return tb
+        return t3
     },
 
     refresh(){
@@ -423,7 +461,7 @@ const Graphics = {
                 // Logic.Falls()
                 // for(let r=0;r<Logic.col;r++){
                 // Logic.table = Logic.NegativeTables()
-                Graphics.ClearLines()
+                // Graphics.ClearLines()
                 // }
                 // Logic.Downs()
                 // setTimeout(()=>{
@@ -513,12 +551,15 @@ const Graphics = {
                                 Logic.Renew()
                                 Logic.Downs()
                             }
+
+                            
+
                         }, 400)
                         
                         setTimeout(()=>{
                             // Logic.table = Logic.NegativeTables()
                             // Logic.Renew()
-                        }, 600)
+                        }, 500)
 
                     }catch(err){}
                 // }else{
@@ -539,17 +580,17 @@ const Graphics = {
 
 // Logic.setGrid(5, 4)
 Logic.setPoints(0)
-Logic.setGrid(6, 4)
-Logic.generate()
+// Logic.setGrid(6, 4)
+// Logic.generate()
 
 
-// Logic.generateTable([
-//     [3, 3, 3, 3],
-//     [0, 2, 4, 0],
-//     [2, 3, 2, 5],
-//     [2, 2, 2, 2],
-//     [1, 3, 1, 3],
-// ])
+Logic.generateTable([
+    [1, 2, 2, 3],
+    [0, 2, 4, 0],
+    [2, 2, 2, 2],
+    [2, 1, 2, 2],
+    [1, 3, 1, 3],
+])
 
 // Graphics.ClearLines()
 // Graphics.ClearLines()
@@ -613,7 +654,7 @@ setInterval(()=>{
     Graphics.ClearLines()
 }, 500)
 
-
+// console.log(Logic.NegativeTables())
 
 // function Hex(letter){
 //     return '0x'+letter.toString(16)
