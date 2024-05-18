@@ -26,8 +26,6 @@ const Logic = {
     // Fruits: '🥜 🥕 🍗 🥩 🍒 🥬 🌶️ 🍆 🍞 🥝 🍔 🌭 🍉 🍌 🥒 🧀 🍷 🍚 🌮 🍜 🫔 🍙 🥂 🥧'.split(" "),
     Fruits: '🍇 🍈 🍉 🍊 🍋 🍌 🍍 🥭 🍎 🍏 🍐 🍑 🍒 🍓 🫐 🥝 🍅 🫒 🥥 🥑 🍆 🥔 🥕 🌽 🌶️ 🫑 🥒 🥬 🥦 🧄 🧅 🥜 🫘 🌰 🫚 🫛 🍄 🍞 🥐 🥖 🫓 🥨 🥯 🥞 🧇 🧀 🍖 🍗 🥩 🥓 🍔 🍟 🍕 🌭 🥪 🌮 🌯 🫔 🥙 🧆 🥚 🍳 🥘 🍲 🫕 🥣 🥗 🍿 🧈 🧂 🥫 🍝 🍱 🍘 🍙 🍚 🍛 🍜 🍠 🍢 🍣 🍤 🍥 🥮 🍡 🥟 🥠 🥡 🍦 🍧 🍨 🍩 🍪 🎂 🍰 🧁 🥧 🍫 🍬 🍭 🍮 🍯 🍼 🥛 ☕ 🫖 🍵 🍶 🍾 🍷 🍸 🍹 🍺 🍻 🥂 🥃 🫗 🥤 🧋 🧃 🧉'.split(" "),
 
-
-
     table: [
         [0, 8, 8, 5],
         [5, 0, 9, 0],
@@ -37,6 +35,11 @@ const Logic = {
     ],
 
     points: 1,
+
+    setRandomness(n){
+        if(n > this.randomness.length-1)
+            n = this.randomness.length-1
+    },
 
     setPoints(n) {
         this.points = n
@@ -195,7 +198,12 @@ const Logic = {
         Logic.table[i][j] = Logic.table[i + 1][j]
         Logic.table[i + 1][j] = aux
         el = Graphics.getElementByCoordinate(i, j)
-        el.style.top = (i + 1) * Logic.size + 'px'
+
+        el.style.top = (i + 1) * (Logic.size) + 'px'
+        // setTimeout(()=>{
+        //     el.style.top = (i + 20) * (Logic.size) + 'px'
+        // }, 100)
+
         el.style.left = j * Logic.size + 'px'
         el.setAttribute('lin', (i + 1))
     },
@@ -622,8 +630,17 @@ Logic.setPoints(0)
 Logic.setGrid(6, 10)
 Logic.generate()
 
+// Logic.randomness = window.innerWidth/40|0
+
+Logic.setRandomness(window.innerWidth/40|0)
 Logic.setGrid(window.innerHeight/120|0, window.innerWidth/120|0)
 Logic.generate()
+
+window.addEventListener('resize', e=>{
+    Logic.setRandomness(window.innerWidth/40|0)
+    Logic.setGrid(window.innerHeight/120|0, window.innerWidth/120|0)
+    Logic.generate()
+})
 
 
 // div.addEventListener('mousedown', handlerDown);
